@@ -2,38 +2,35 @@
 
 The idea of modularity is to partition the overall development effort, support independent testing and analysis of components, decouple parts so they can be modified individually and dividing a large system in mind-sized chunks.
 
+
 \subsection{Coupling}
 
-\textbf{Coupling} measures interdependence between different modules. A thigh / high coupling means that modules cannot be developed, tested, changed, understood or reused in isolation. Therefore we want low coupling for correct and maintainable software.
+Coupling measures interdependence between different modules. A thigh / high coupling means that modules cannot be developed, tested, changed, understood or reused in isolation. Therefore, we want low coupling for correct and maintainable software.
 
 \subsubsection{Data Coupling}
 
-Modules that expose their internal data representation become tightly coupled to their clients (\textbf{representation exposure}). It prevents modules from maintaining strong invariant and concurrency requires complex synchronization. Similarly, data representations often include sub-objects, exposing these can lead to unexpected side effects. \\
+Modules that expose their internal data representation become tightly coupled to their clients (representation exposure). It prevents modules from maintaining strong invariant and concurrency requires complex synchronization. Similarly, data representations often include sub-objects, exposing these can lead to unexpected side effects. \\
 
-One way of preventing this is to restrict the access to data - forcing clients to access the data representation through a narrow interface. Avoid exposure to sub-objects and prevent the leaks of any references to these sub-objects. \\
+One way of preventing this is to restrict the access to data - forcing clients to access the data representation through a narrow interface. Avoid exposure of sub-objects and prevent the leaks of any references to these sub-objects. \\
 
-Modules get couples by operating on shared data structures (e.g. compiler working on syntax tree). This can be avoided by making the data structure immutable, however changing the data representation remains a problem and having to copy it can lead to run-time and memory overhead. \\
+Modules also get coupled by operating on shared data structures (e.g. compiler working on syntax tree). This can be avoided by making the data structure immutable, however changing the data representation remains a problem and having to copy it can lead to run-time and memory overhead. \\
 
 The flyweight pattern is one example that tries to maximize sharing of immutable objects, it is for example used in Java for constant strings.
 
 \subsubsection{Procedural Coupling}
 
-Modules are coupled to other modules whose methods they call. Callers cannot be reused without callee modules and changing a signature in the callee requires changing the caller. \\
+Modules are coupled to other modules whose methods they call. Callers cannot be reused without the callee modules and changing a signature in the callee requires changing the caller. \\
 
 This can be prevented by moving code and even duplicating functionality to avoid dependency. Another solution could be to change to a event based system. Components may generate events and register for events from other components using a callback. Event generators do not know which components will be affected by their events (loss of control). \\
 
-One common event based architecture is Model-View-Controller. The model contains the core functionality and data, the view is responsible for displaying information and the controller handles user inputs. All communication happens via events and the model and the view are decouples through the controller.
-
+One common event based architecture is Model-View-Controller. The model contains the core functionality and data, the view is responsible for displaying information and the controller handles user inputs. All communication happens via events, the models and the views are decoupled through the controllers.
 \begin{center}
-	\includegraphics[width=0.5\columnwidth]{assets/mvc}
+	\includegraphics[width=0.7\columnwidth]{assets/mvc}
 \end{center}
 
 \subsubsection{Class Coupling}
 
-Inheritance couples the subclass to the superclass, changes in the superclass may break the subclass. \\
-
-To solve this, we can replace (multiple) inheritance by subtyping and delegation.
-
+Inheritance couples the subclass to the superclass, changes in the superclass may break the subclass. To solve this, we can replace (multiple) inheritance by subtyping and delegation.
 \begin{center}
 	\includegraphics[width=\columnwidth]{assets/inheritance}
 \end{center}
