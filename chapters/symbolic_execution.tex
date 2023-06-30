@@ -1,10 +1,5 @@
 \section{Symbolic \& Concolic Execution}
 
-Remember the following diagram:
-
-\begin{center}
-	\includegraphics[width=0.8\columnwidth]{assets/program_behavior}
-\end{center}
 
 If we compute the symbolic constraints per path, and then solve these constraints we will have all concrete inputs that explore all paths. This is the core idea of symbolic execution.
 
@@ -25,7 +20,7 @@ SMT solvers combine SAT-solving with theory reasoning. They can produce models, 
 
 Concolic execution combines concrete and symbolic execution. The high-level idea is that the concrete execution drives the symbolic one. Programs are executed with concrete inputs, but additionally maintain a symbolic state. Concrete values are used to simplify path conditions. \\
 
-A concolic execution may not be able to explore all paths, but any additionally explored path increases the chances of uncovering problems. We use concolic execution to expand sets of manually determined test inputs. \\
+A concolic execution may not be able to explore all paths, but any additionally explored path increases the chances of uncovering bugs. We use concolic execution to expand sets of manually determined test inputs. \\
 
 Symbolically executing native code is difficult if not impossible. Concolic execution can help by invoking the functions with concrete values. Still, it might not be able to explore all paths. \\
 
@@ -36,7 +31,7 @@ Further, one has to consider that symbolic expressions can become large, in part
 
 The idea behind fuzzing is to run programs on abnormal inputs (e.g. randomly generated). This should help finding potential exploits that attackers could use. \\
 
-We want to find transactions that thoroughly explore the state space. The problem is the exponential number of block states. Both, symbolic execution and fuzzing, have their drawbacks. Imitation learning based fuzzers try to solve their problems.
+We want to find transactions that thoroughly explore the state space. The problem is the exponential number of block states. Both, symbolic execution and fuzzing, have their drawbacks. Imitation learning based fuzzers try to solve these problems.
 \begin{center}
 	\includegraphics[width=0.9\columnwidth]{assets/fuzzing}
 \end{center}

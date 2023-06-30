@@ -57,14 +57,16 @@ An intraprocedural control flow graph (CFG) of a procedure $p$ is a graph $(N,E)
 	\includegraphics[width=0.8\columnwidth]{assets/cfg}
 \end{center}
 
-Statement coverage assesses the quality of a test suite by measuring how much of the CFG it executes.
+Statement coverage assesses the quality of a test suite by measuring how much of the CFG it executes:
 $$\text{Statement Coverage } = \frac{\text{\#Executed Statements}}{\text{\#Statements}}$$
 
-Still, 100\% statement coverage does not guarantee that we detect all the bugs, since we might not execute all edges. This is why we introduce branch coverage.
+Still, 100\% statement coverage does not guarantee that we detect all the bugs, since we might not execute all edges. This is why we introduce branch coverage:
 $$\text{Branch Coverage } = \frac{\text{\#Executed Branches}}{\text{\#Branches}}$$
 
-Branch coverage leads to more thorough testing than statement coverage and is the most widely-used adequacy criterion in industry. Still, it does not guarantee that there are no bugs. Therefore, we introduce path coverage. The idea behind path coverage is to test all possible paths through the CFG.
+Branch coverage leads to more thorough testing than statement coverage and is the most widely-used adequacy criterion in industry. Still, it does not guarantee that there are no bugs. Therefore, we introduce path coverage. The idea behind path coverage is to test all possible paths through the CFG:
+\vspace{-5pt}
 $$\text{Path Coverage } = \frac{\text{\#Executed Paths}}{\text{\#Paths}}$$
 
-However, if for example the number of loop iterations is not known statically, an arbitrary large number of test cases is needed for complete path coverage. This leads to the final idea, loop coverage.
+However, if for example the number of loop iterations is not known statically, an arbitrary large number of test cases is needed for complete path coverage. This leads to the final idea, loop coverage:
 $$\text{Loop Coverage } = \frac{\text{\#Executed Loops w. 0, 1 and $>$1 iter.}}{\text{\#Loops} * 3}$$
+\vspace{-25pt}

@@ -1,7 +1,6 @@
 \section{Analysis}
 
-The goal is to build an automatic analyzer which takes as input an arbitrary program and an arbitrary property such that the analyzer can answer if the property holds or not. But this problem is undecidable, so we have to make some sacrifices. We only want the analyzer to decided if the property holds for sure.
-
+The goal is to build an automatic analyzer, which takes as input an arbitrary program and an arbitrary property, such that the analyzer can answer if the property holds or not. However, this problem is undecidable, so we have to make some sacrifices. Therefore, we only want the analyzer to decided if the property holds for sure.
 \begin{center}
 	\includegraphics[width=0.8\columnwidth]{assets/program_behavior}
 \end{center}
@@ -13,9 +12,9 @@ Static program analysis can run the program without giving a concrete input and 
 
 Abstract interpretation works by:
 \begin{enumerate}
-	\item Select / define an abstract domain
-	\item Define abstract semantics for the language w.r.t. to the domain
-	\item Iterate abstract transformers over the abstract domain until a fixed point is reached
+	\item Selecting / defining an abstract domain
+	\item Defining abstract semantics for the language w.r.t. to the domain
+	\item Iterate the abstract transformers over the abstract domain until a fixed point is reached
 \end{enumerate}
 
 It is important to remember that abstract transformers are defined per programming language once and for all, and not per program. A correct abstract transformer should always produce results that are a superset of what a concrete transformer would produce. In general it is easy to be sound and imprecise, being sound and precise is hard. \\
@@ -36,7 +35,7 @@ With the interval abstraction we can have cases where we cannot reach a fixed po
 
 A partial order is a binary relation $\sqsubseteq \; \subseteq \; L \times L$ on a set $L$ with the properties of being reflexive, transitive and anti-symmetric. The intuition is that it captures implications between facts. Later, we will say that if $p \sqsubseteq q$, then $p$ is more precise than $q$. Given a poset, we can construct a Hasse diagram. \\
 
-Given a poset $(L, \sqsubseteq)$, an element $\bot \in L$ is called the least element if it is smaller than all other elements of the poset. The greatest element $\top$ is defined analogous. The least and greatest elements may not exist, but if they do they are unique. \\
+Given a poset $(L, \sqsubseteq)$, an element $\bot \in L$ is called the least element if it is smaller than all other elements. The greatest element $\top$ is defined analogous. The least and greatest elements may not exist, but if they do they are unique.
 
 Given a poset $(L, \sqsubseteq)$ and $Y \subseteq L$, $u \in L$ is an upper bound of $Y$ if $\forall p \in Y: p \sqsubseteq u$. $\bigsqcup Y \in L$ is a least upper bound of $Y$ if it is an upper bound of $Y$ and $\bigsqcup Y \sqsubseteq u$ whenever $u$ is another upper bound of $Y$. We define the lower bound and greatest lower bound analogously. \\
 
@@ -50,19 +49,18 @@ $$\forall a, b \in A: a \sqsubseteq b \Rightarrow f(a) \leq f(b)$$
 For a poset $(A, \sqsubseteq)$, a function $f: A \to A$, and element $a \in A$, $a$ is a fixed point iff $f(a) = a$. Further $a$ is a post-fixedpoint iff $f(a) \sqsubseteq a$. The set of all fixed points is denoted by Fix(f) and the set of all post-fixedpoints is denoted by Red(f). \\
 
 For a poset $(A, \sqsubseteq)$ and a function $f: A \to A$, we say that $\text{lfp} \sqsubseteq f \in A$ is a least fixed point of $f$ if $\text{lfp} \sqsubseteq f$ is a fixed point and $\forall a \in A: a = f(a) \Rightarrow \text{lfp} \sqsubseteq f \sqsubseteq a$.
-
 \begin{center}
 	\includegraphics[width=\columnwidth]{assets/fixed_points}
 \end{center}
 
 If $(A, \sqsubseteq), \bigsqcup, \bigsqcap, \bot, \top)$ is a complete lattice and $f: A \to A$ is a monotone function, then $\text{lfp} \sqsubseteq f$ exists and $\text{lfp} \sqsubseteq f = \bigsqcap \text{Red}(f) \in \text{Fix}(f)$. \\
 
-Given a poset of finite height, a least element $\bot$, a monotone $f$. Then the iterates $f^0(\bot), f^1(\bot), f^2(\bot), ...$ form an increasing squenece which eventually stabilizes.
+Given a poset of finite height, a least element $\bot$, and a monotone $f$, then the iterates $f^0(\bot), f^1(\bot), f^2(\bot), ...$ form an increasing sequence which eventually stabilizes.
 $$\text{lfp} \sqsubseteq f = f^n(\bot)$$
 
 \subsubsection{Approximating Functions}
 
-Let $[[P]]$ be the set of reachable states of a program $P$. Let function $F$ be ($I$ is the initial state and $\to$ is the transition relation) :
+Let $[[P]]$ be the set of reachable states of a program $P$. Let function $F$ ($I$ is the initial state and $\to$ is the transition relation) be:
 $$F(S) = I \cup \{c' \, | \, c \in S \land c \to c' \}$$
 
 Then, $[[P]]$ is a fixed point of $F$, in fact it is the least fixed point of $F$. In static program analysis we want to approximate a programming language. For this, we define a function $F^\#$ that approximates $F$. Then, using existing theorems, approximate the least fixed point of $F$ by computing the least fixed point of $F^\#$. \\
@@ -79,7 +77,7 @@ $$\forall z \in A : \alpha (F(\gamma(z))) \sqsubseteq F^\#(z)$$
 
 To approximate $F$, we can always define $F^\#(z) = \top$. This solution is always sound, however it is too imprecise. \\
 
-The most precise approximation is given by $F^\#(z) = \alpha(F(\gamma(z)))$. The problem is that we often cannot implement such a $F^\#(z)$. However, we can come up with a $F^\#(z)$ that has the same behavior but a different implementation. Any such $F^\#(z)$ is referred to as the best transformer. \\
+The most precise approximation is given by $F^\#(z) = \alpha(F(\gamma(z)))$. The problem is that we often cannot implement such a $F^\#(z)$. However, we can come up with a $F^\#(z)$ that has the same behavior but a different implementation. Any such $F^\#(z)$ is referred to as the best transformer.\columnbreak
 
 \textbf{Least Fixed Point Approximation} - If we have the following properties:
 \begin{enumerate}
@@ -160,15 +158,16 @@ $(l', \text{action}, l)$ are the edges in the CFG, an example could be $(1, \tex
 	\includegraphics[width=0.6\columnwidth]{assets/effects}
 \end{center}
 
+\vspace{-20pt}
 \subsubsection{Iterate the Transformer}
 
-In the final step, we know compute the least fixed point for a given program. However, especially with loops we can encounter the problem where a variable indefinitely changes (counts up or down). To avoid this we have to use widening. The widening operator $\nabla: L \times L \to L$ is defined as:
+In the final step, we now compute the least fixed point for a given program. However, especially with loops we can encounter the problem where a variable indefinitely changes (always counts up or down). To avoid this we have to use widening. The widening operator $\nabla: L \times L \to L$ is defined as:
 \begin{itemize}
 	\item $\forall a,b \in L: a \sqcup b \sqsubseteq a \nabla b$
 	\item if $x^0 \sqsubseteq x^1 \sqsubseteq ... \sqsubseteq x^n \sqsubseteq ...$ is an increasing sequence then $y^0 \sqsubseteq y^1 \sqsubseteq ... \sqsubseteq y^n$ stabilizes after a finite number of steps
 \end{itemize}
 
-Note that widening is completely independent of $F^i$, similar to join it is defined for a specific domain. If $\nabla, F$ are monotone then the sequence $y^0 = \bot, y^1 = y^0 \nabla F(y^0), ...$ will stabilize after a finite number of steps $n$ with $y^n$ being a post-fixed point of $F$. \\
+Note that widening is completely independent of $F^i$, similar to join it is defined for a specific domain. If $\nabla$ and $F$ are monotone then the sequence $y^0 = \bot, y^1 = y^0 \nabla F(y^0), ...$ will stabilize after a finite number of steps $n$ with $y^n$ being a post-fixed point of $F$. \\
 
 For the interval domain, we define the widening operator $\nabla_i$ as $[a, b] \nabla_i [c, d] = [e, f]$ where $e = -\infty$ if $c < a$ and $f = \infty$ if $b < d$. \\
 
@@ -177,7 +176,7 @@ Iteration does not have to be in-order, there is also chaotic (asynchronous) ite
 
 \subsection{Applications of Analysis: Pointers}
 
-Pointer and Alias Analysis is fundamental to reasoning about heap manipulation programs. First we define the concrete store:
+Pointer and alias analysis is fundamental to reasoning about heap manipulation programs. First we define the concrete store:
 \begin{itemize}
 	\item Objs is the set of all possible objects
 	\item PtrVal = Objs $\cup \, \{$null$\}$
@@ -194,9 +193,9 @@ $$\Sigma = \text{Lab} \times \text{Store}$$
 
 Aliases are two pointers p and q that point to the same object. A points-to pair (p, A) means that p holds the address of object A. If (p, A) and (r, A) are points-to pairs, then p and r are aliases.\\
 
-A program can create an unbounded number of objects. Therefore we need to use some abstraction when allocating a new object. That is, we need some static naming scheme for dynamically allocated objects. \\
+A program can create an unbounded number of objects. Therefore, we need to use some abstraction when allocating a new object. That is, we need some static naming scheme for dynamically allocated objects. \\
 
-Allocation sites divide the heap into a fixed partition based on the statement label. All objects allocated at the same program point (label) get represented by a single abstract object.
+Allocation sites divide the heap into fixed partitions based on the statement label. All objects allocated at the same program point (label) get represented by a single abstract object.
 \begin{center}
 	\includegraphics[width=0.8\columnwidth]{assets/allocation_sites}
 \end{center}
@@ -204,7 +203,7 @@ Allocation sites divide the heap into a fixed partition based on the statement l
 If this is too imprecise, we can also use the calling context. If we use allocation sites (labels), we can now define the abstract objects as:
 $$\text{AbsObj} = \{ l \,|\, \text{statement is p := alloc}^l \}$$
 
-That is, this is just those labels in the program where allocation of an object occurs. Here alloc$^l$ is just the name of the allocation instruction.
+This is just those labels in the program where allocation of an object occurs. Here alloc$^l$ is just the name of the allocation instruction.
 
 \subsubsection{Flow Sensitive Pointer Analysis}
 
@@ -216,21 +215,21 @@ We use the same step-by-step approach as before. The abstract domain is a comple
 	&( \text{AbsObj} \times \text{Field} \to \mathcal P (\text{AbsObj})) \; )
 \end{align*}
 
-The abstract domain keeps two maps at every program label. The first one contains a mapping from a pointer variable to a set of abstract objects. The second map contains a mapping from the fields of abstract objects to the set of abstract objects they point to. Since this lattice is of finite height, we will not need widening. $\sqsubseteq, \sqcup, \sqcap, \bot, \top$ are all lifted appropriately. \\
+The abstract domain keeps two maps at every program label. The first one contains a mapping from a pointer variable to a set of abstract objects. The second map contains a mapping from the fields of abstract objects to the set of abstract objects they point to. Since this lattice is of finite height, we will not need widening. The operations $\sqsubseteq, \sqcup, \sqcap, \bot, \top$ are all lifted appropriately. \\
 
 Using $\alpha$, we abstract a set of states into the two kinds of maps. Similarly, using $\gamma$, we concretize the pointer maps to a set of states. \\
 
-We now need to define the effect of program statements manipulating pointers on the abstract domain. It can be summarized as:
+We now need to define the effect of program statements manipulating pointers on the abstract domain. This can be summarized as:
 \begin{center}
 	\includegraphics[width=\columnwidth]{assets/transformers}
 \end{center}
 
-Let ustake a look at the most tricky one, pointer heap store. Given \texttt{p.f := q} and \texttt{p $\to$ \{A\}}, \texttt{A.f $\to$ \{B\}}, and \texttt{q $\to$ \{C\}}. Is \texttt{A.f $\to$ \{C\}} the correct result? No, it is not. The correct solution would be \texttt{A.f $\to$ \{B, C\}}, this is called weak updates.
+Let us take a look at the most tricky one, pointer heap store. Given \texttt{p.f := q} and \texttt{p $\to$ \{A\}}, \texttt{A.f $\to$ \{B\}}, and \texttt{q $\to$ \{C\}}. Is \texttt{A.f $\to$ \{C\}} the correct result? No, it is not. The correct solution would be \texttt{A.f $\to$ \{B, C\}}, this is called weak updates.
 
 
 \subsubsection{Flow Insensitive Pointer Analysis}
 
-This type of analysis assumes all execution orders are possible, it abstracts away order between statements. This is good for concurrency and is scalable, but it may be too imprecise. \\
+This type of analysis assumes all execution orders are possible, it abstracts away the order between statements. This is good for concurrency, but it may be too imprecise. \\
 
 The abstract domain does not keep information per label, essentially ignoring the control flow of the program.
 \begin{align*}
@@ -238,7 +237,7 @@ The abstract domain does not keep information per label, essentially ignoring th
 	&( \text{AbsObj} \times \text{Field} \to \mathcal P (\text{AbsObj}))
 \end{align*}
 
-To account for the loss of control-flow, all updates have to be weak. This can lead to very imprecise results. To avoid this, we can initialize local variables with \texttt{null} instead of $\top$.
+To account for the loss of control-flow, all updates are weak. This can lead to imprecise results. To avoid this, we can initialize local variables with \texttt{null} instead of $\top$.
 
 
 \subsection{Application of Analysis: \\ Static Concurrency Checker}
@@ -247,6 +246,4 @@ Another use case is to check if parallel algorithms are deterministic. However, 
 
 For static analysis there are three sources of unboundedness we have to deal with. These are the heap, the range of array indices, and the number of threads. For the heap we can use flow-insensitive points-to analysis and for the range of array indices we use numerical abstraction. \\
 
-We first perform sequential analysis on a per thread basis. We then take the cartesian product of these states and filter out all the ones that are not possible. Leaving us with the concrete program states. \\
-
-Now, we can check the property we are interested in proving.
+We first perform sequential analysis on a per thread basis. We then take the cartesian product of these states and filter out all the ones that are not possible. Leaving us with the concrete program states. Now, we can check the property we are interested in proving.
